@@ -113,7 +113,18 @@ public struct FitFileDecoder {
     ///   - messages: FitMessage Types to Decode
     ///   - decoded: Decoded FitMessages
     /// - Throws: FitDecodingError
-    public mutating func decode(data: Data, messages: [FitMessage.Type], decoded: ((_: FitMessage) -> Void)? ) throws {
+    public mutating func decode(data: Data, messages: [FitMessage.Type], decoded: ((FitMessage, Double) -> Void)? ) throws {
+        try decode(data: Data, messages: [FitMessage.Type], decoded: { (message, _) in decoded?(message) })
+    }
+    
+    /// Decodes the FIT File Data into FitMessage Objects
+    ///
+    /// - Parameters:
+    ///   - data: FIT File data
+    ///   - messages: FitMessage Types to Decode
+    ///   - decoded: Decoded FitMessages
+    /// - Throws: FitDecodingError
+    public mutating func decode(data: Data, messages: [FitMessage.Type], decoded: ((FitMessage, Double) -> Void)? ) throws {
 
         /// Clear out any old data
         /// This will help where they use the same Decoder twice for some reason
@@ -192,7 +203,7 @@ public struct FitFileDecoder {
                         } else {
                             let devData = unwrapDeveloperData(message: message, fieldsDescriptions: fieldDescriptions)
                             message.developerValues = devData
-                            decoded?(message)
+                            decoded?(message, Double(decoder.index) / Double(messageData.count))
                         }
                     case .failure(let error):
                         throw error
