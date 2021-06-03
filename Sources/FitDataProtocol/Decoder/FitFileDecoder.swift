@@ -114,7 +114,7 @@ public struct FitFileDecoder {
     ///   - decoded: Decoded FitMessages
     /// - Throws: FitDecodingError
     public mutating func decode(data: Data, messages: [FitMessage.Type], decoded: ((FitMessage) -> Void)? ) throws {
-        try decode(data: Data, messages: [FitMessage.Type], decoded: { (message, _) in decoded?(message) })
+        try decode(data: data, messages: messages, decoded: { (message, _) in decoded?(message) })
     }
     
     /// Decodes the FIT File Data into FitMessage Objects
