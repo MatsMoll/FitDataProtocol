@@ -113,7 +113,7 @@ public struct FitFileDecoder {
     ///   - messages: FitMessage Types to Decode
     ///   - decoded: Decoded FitMessages
     /// - Throws: FitDecodingError
-    public mutating func decode(data: Data, messages: [FitMessage.Type], decoded: ((FitMessage, Double) -> Void)? ) throws {
+    public mutating func decode(data: Data, messages: [FitMessage.Type], decoded: ((FitMessage) -> Void)? ) throws {
         try decode(data: Data, messages: [FitMessage.Type], decoded: { (message, _) in decoded?(message) })
     }
     
